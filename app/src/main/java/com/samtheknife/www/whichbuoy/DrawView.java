@@ -5,11 +5,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Point;
 import android.util.DisplayMetrics;
 import android.view.Display;
 import android.view.View;
+import com.samtheknife.www.whichbuoy.CompassDirection;
 
 /**
  * Created by sam on 6/19/17.
@@ -17,15 +19,19 @@ import android.view.View;
 
 public class DrawView extends View {
     Paint paint = new Paint();
-
     Bitmap compass;
+    CompassDirection compassDirection;
+
 
     public DrawView(Context context ){
 
         super(context);
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.outHeight = 400;
-        compass = BitmapFactory.decodeResource(getResources(), R.drawable.sam_compass, opt);
+
+       // Matrix sizeMat = new Matrix();
+        //sizeMat.postScale(50, 50);
+        compass = BitmapFactory.decodeResource(getResources(), R.drawable.compass);
+        compass = Bitmap.createScaledBitmap(compass, 1600,400, false);
+        compassDirection = new CompassDirection(context);
     }
 
     @Override
@@ -45,7 +51,13 @@ public class DrawView extends View {
         paint.setStrokeWidth(0);
          canvas.drawCircle(wc, hc, 100, paint);
 
-        canvas.drawBitmap(compass, wc, hc, paint);
+        canvas.drawBitmap(compass,0, hc, paint);
+
+        String testCompass = compassDirection.getTestCompass();
+
+        paint.setColor(Color.MAGENTA);
+        paint.setTextSize(40);
+        canvas.drawText(testCompass,10, 100, paint);
 
     }
 }
